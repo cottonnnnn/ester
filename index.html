@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Ester | Telegram App</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      background-color: #f7f7f7;
+      margin: 0;
+      padding: 50px;
+    }
+    .button {
+      display: block;
+      margin: 20px auto;
+      padding: 15px 30px;
+      font-size: 16px;
+      background-color: #0088cc;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+    .egg {
+      width: 150px;
+      cursor: pointer;
+      margin: 40px auto;
+      display: none;
+    }
+    .prize {
+      font-size: 20px;
+      margin-top: 20px;
+    }
+    .back-btn {
+      margin-top: 30px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Выбери приз:</h1>
+
+  <button class="button" onclick="selectPrize('Telegram Premium')">Telegram Premium</button>
+  <button class="button" onclick="selectPrize('Подарок')">Подарок</button>
+  <button class="button" onclick="selectPrize('Звёзды Telegram')">Звёзды Telegram</button>
+
+  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Egg_Icon.svg/1024px-Egg_Icon.svg.png" class="egg" id="egg" onclick="crackEgg()">
+  <div class="prize" id="prizeText"></div>
+  <button class="button back-btn" onclick="goBack()">Назад в меню</button>
+
+  <script>
+    let selectedPrize = '';
+
+    function selectPrize(prize) {
+      selectedPrize = prize;
+      document.getElementById('egg').style.display = 'block';
+      document.querySelectorAll('.button').forEach(btn => btn.style.display = 'none');
+    }
+
+    function crackEgg() {
+      document.getElementById('egg').src = 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Broken_Egg.svg/1024px-Broken_Egg.svg.png';
+      document.getElementById('prizeText').innerText = Поздравляем! Вы выбили: ${selectedPrize};
+      document.querySelector('.back-btn').style.display = 'inline-block';
+    }
+
+    function goBack() {
+      selectedPrize = '';
+      document.getElementById('egg').src = 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Egg_Icon.svg/1024px-Egg_Icon.svg.png';
+      document.getElementById('egg').style.display = 'none';
+      document.getElementById('prizeText').innerText = '';
+      document.querySelectorAll('.button').forEach(btn => btn.style.display = 'block');
+      document.querySelector('.back-btn').style.display = 'none';
+    }
+  </script>
+
+</body>
+</html>
