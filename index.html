@@ -1,104 +1,46 @@
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup
+from telegram.ext import Updater, CommandHandler, CallbackQueryHandler
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Ester Web App</title>
-  <style>
-    body {
-      font-family: sans-serif;
-      background: #121212;
-      color: white;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      margin: 0;
-    }
-    h1 {
-      margin-bottom: 40px;
-    }
-    .menu {
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-    }
-    .menu button {
-      padding: 15px 30px;
-      font-size: 16px;
-      border: none;
-      border-radius: 8px;
-      background-color: #2a2a2a;
-      color: white;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-    .menu button:hover {
-      background-color: #444;
-    }
-    #egg-screen {
-      display: none;
-      flex-direction: column;
-      align-items: center;
-    }
-    .egg {
-      margin-top: 30px;
-      width: 100px;
-      height: 130px;
-      background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Emoji_u1f95a.svg/2048px-Emoji_u1f95a.svg.png') no-repeat center/contain;
-      cursor: pointer;
-      transition: transform 0.3s;
-    }
-    .egg:active {
-      transform: scale(0.95);
-    }
-    .prize {
-      margin-top: 20px;
-      font-size: 20px;
-      color: #00ffcc;
-      display: none;
-    }
-    .back-btn {
-      margin-top: 30px;
-      background-color: #555;
-    }
-  </style>
-</head>
-<body>
-  <h1>Ester</h1>
-  <div class="menu" id="main-menu">
-    <button onclick="showEgg('Telegram Premium')">Telegram Premium</button>
-    <button onclick="showEgg('Случайный подарок')">Подарок</button>
-    <button onclick="showEgg('Звезды Telegram')">Звезды</button>
-  </div>
+# Функция для старта, которая отправляет меню
+def start(update, context):
+    keyboard = [
+        [InlineKeyboardButton("Telegram Premium", callback_data='premium')],
+        [InlineKeyboardButton("Подарок", callback_data='gift')],
+        [InlineKeyboardButton("Звезды", callback_data='stars')]
+    ]
+    reply_markup = InlineKeyboardMarkup(keyboard)
+    update.message.reply_text('Привет! Выбери что-то из меню:', reply_markup=reply_markup)
 
-  <div id="egg-screen" class="menu">
-    <div class="egg" onclick="revealPrize()"></div>
-    <div class="prize" id="prize-text"></div>
-    <button class="back-btn" onclick="goBack()">Назад в меню</button>
-  </div>
+# Функция для обработки нажатия кнопки
+def button(update, context):
+    query = update.callback_query
+    query.answer()
+    
+    if query.data == 'premium':
+        query.edit_message_text(text="Ты выбрал Telegram Premium! Сюрприз для тебя...")
+    elif query.data == 'gift':
+        query.edit_message_text(text="Ты выбрал Подарок! Ожидай сюрприз...")
+    elif query.data == 'stars':
+        query.edit_message_text(text="Ты выбрал Звезды! Готовься к звездами...")
+    else:
+        query.edit_message_text(text="Что-то пошло не так...")
 
-  <script>
-    let prize = '';
-    function showEgg(selectedPrize) {
-      prize = selectedPrize;
-      document.getElementById('main-menu').style.display = 'none';
-      document.getElementById('egg-screen').style.display = 'flex';
-      document.getElementById('prize-text').style.display = 'none';
-    }
+def main():
+    # Токен твоего бота
+    updater = Updater("YOUR_BOT_TOKEN", use_context=True)
+    
+    # Диспетчер для добавления обработчиков
+    dp = updater.dispatcher
 
-    function revealPrize() {
-      const text = document.getElementById('prize-text');
-      text.textContent = `Выпало: ${prize}`;
-      text.style.display = 'block';
-    }
+    # Команда start
+    dp.add_handler(CommandHandler("start", start))
+    
+    # Обработчик для нажатий кнопок
+    dp.add_handler(CallbackQueryHandler(button))
 
-    function goBack() {
-      document.getElementById('main-menu').style.display = 'flex';
-      document.getElementById('egg-screen').style.display = 'none';
-    }
-  </script>
-</body>
-</html>
+    # Запуск бота
+    updater.start_polling()
+    updater.idle()
+
+if name == '__main__':
+    main()
