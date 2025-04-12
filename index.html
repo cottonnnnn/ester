@@ -1,79 +1,104 @@
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Ester | Telegram App</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ester Web App</title>
   <style>
     body {
       font-family: sans-serif;
-      text-align: center;
-      background-color: #f7f7f7;
+      background: #121212;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
       margin: 0;
-      padding: 50px;
     }
-    .button {
-      display: block;
-      margin: 20px auto;
+    h1 {
+      margin-bottom: 40px;
+    }
+    .menu {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+    .menu button {
       padding: 15px 30px;
       font-size: 16px;
-      background-color: #0088cc;
-      color: white;
       border: none;
-      border-radius: 10px;
+      border-radius: 8px;
+      background-color: #2a2a2a;
+      color: white;
       cursor: pointer;
+      transition: background 0.3s;
+    }
+    .menu button:hover {
+      background-color: #444;
+    }
+    #egg-screen {
+      display: none;
+      flex-direction: column;
+      align-items: center;
     }
     .egg {
-      width: 150px;
+      margin-top: 30px;
+      width: 100px;
+      height: 130px;
+      background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Emoji_u1f95a.svg/2048px-Emoji_u1f95a.svg.png') no-repeat center/contain;
       cursor: pointer;
-      margin: 40px auto;
-      display: none;
+      transition: transform 0.3s;
+    }
+    .egg:active {
+      transform: scale(0.95);
     }
     .prize {
-      font-size: 20px;
       margin-top: 20px;
+      font-size: 20px;
+      color: #00ffcc;
+      display: none;
     }
     .back-btn {
       margin-top: 30px;
-      display: none;
+      background-color: #555;
     }
   </style>
 </head>
 <body>
+  <h1>Ester</h1>
+  <div class="menu" id="main-menu">
+    <button onclick="showEgg('Telegram Premium')">Telegram Premium</button>
+    <button onclick="showEgg('Случайный подарок')">Подарок</button>
+    <button onclick="showEgg('Звезды Telegram')">Звезды</button>
+  </div>
 
-  <h1>Выбери приз:</h1>
-
-  <button class="button" onclick="selectPrize('Telegram Premium')">Telegram Premium</button>
-  <button class="button" onclick="selectPrize('Подарок')">Подарок</button>
-  <button class="button" onclick="selectPrize('Звёзды Telegram')">Звёзды Telegram</button>
-
-  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Egg_Icon.svg/1024px-Egg_Icon.svg.png" class="egg" id="egg" onclick="crackEgg()">
-  <div class="prize" id="prizeText"></div>
-  <button class="button back-btn" onclick="goBack()">Назад в меню</button>
+  <div id="egg-screen" class="menu">
+    <div class="egg" onclick="revealPrize()"></div>
+    <div class="prize" id="prize-text"></div>
+    <button class="back-btn" onclick="goBack()">Назад в меню</button>
+  </div>
 
   <script>
-    let selectedPrize = '';
-
-    function selectPrize(prize) {
-      selectedPrize = prize;
-      document.getElementById('egg').style.display = 'block';
-      document.querySelectorAll('.button').forEach(btn => btn.style.display = 'none');
+    let prize = '';
+    function showEgg(selectedPrize) {
+      prize = selectedPrize;
+      document.getElementById('main-menu').style.display = 'none';
+      document.getElementById('egg-screen').style.display = 'flex';
+      document.getElementById('prize-text').style.display = 'none';
     }
 
-    function crackEgg() {
-      document.getElementById('egg').src = 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Broken_Egg.svg/1024px-Broken_Egg.svg.png';
-      document.getElementById('prizeText').innerText = Поздравляем! Вы выбили: ${selectedPrize};
-      document.querySelector('.back-btn').style.display = 'inline-block';
+    function revealPrize() {
+      const text = document.getElementById('prize-text');
+      text.textContent = `Выпало: ${prize}`;
+      text.style.display = 'block';
     }
 
     function goBack() {
-      selectedPrize = '';
-      document.getElementById('egg').src = 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Egg_Icon.svg/1024px-Egg_Icon.svg.png';
-      document.getElementById('egg').style.display = 'none';
-      document.getElementById('prizeText').innerText = '';
-      document.querySelectorAll('.button').forEach(btn => btn.style.display = 'block');
-      document.querySelector('.back-btn').style.display = 'none';
+      document.getElementById('main-menu').style.display = 'flex';
+      document.getElementById('egg-screen').style.display = 'none';
     }
   </script>
-
 </body>
 </html>
