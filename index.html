@@ -1,84 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Ester Web App</title>
-  <style>
-    body {
-      font-family: sans-serif;
-      background: #121212;
-      color: white;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      margin: 0;
-    }
-    h1 {
-      margin-bottom: 40px;
-    }
-    .menu {
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-    }
-    .menu button {
-      padding: 15px 30px;
-      font-size: 16px;
-      border: none;
-      border-radius: 8px;
-      background-color: #2a2a2a;
-      color: white;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-    .menu button:hover {
-      background-color: #444;
-    }
-    #egg-screen {
-      display: none;
-      flex-direction: column;
-      align-items: center;
-    }
-    .egg {
-      margin-top: 30px;
-      width: 120px;
-      height: auto;
-      cursor: pointer;
-      transition: transform 0.3s;
-    }
-    .egg:active {
-      transform: scale(0.95);
-    }
-    .prize {
-      margin-top: 20px;
-      font-size: 20px;
-      color: #00ffcc;
-      display: none;
-    }
-    .back-btn {
-      margin-top: 30px;
-      background-color: #555;
-    }
-  </style>
-</head>
-<body>
-  <h1>Ester</h1>
-  <div class="menu" id="main-menu">
-    <button onclick="showEgg('Telegram Premium')">Telegram Premium</button>
-    <button onclick="showEgg('Случайный подарок')">Подарок</button>
-    <button onclick="showEgg('Звезды Telegram')">Звезды</button>
-  </div>
-
-  <div id="egg-screen" class="menu">
-    <img id="egg-image" src="" alt="Egg" class="egg" onclick="revealPrize()" />
-    <div class="prize" id="prize-text"></div>
-    <button class="back-btn" onclick="goBack()">Назад в меню</button>
-  </div>
-
-  <script>
+<script>
+  window.onload = function () {
     let prize = '';
     let clickCount = 0;
 
@@ -91,16 +12,16 @@
       'egg3_star.png'     // Подарок
     ];
 
-    function showEgg(selectedPrize) {
+    window.showEgg = function(selectedPrize) {
       prize = selectedPrize;
       clickCount = 0;
       eggImage.src = eggStages[0];
       document.getElementById('main-menu').style.display = 'none';
       document.getElementById('egg-screen').style.display = 'flex';
       prizeText.style.display = 'none';
-    }
+    };
 
-    function revealPrize() {
+    window.revealPrize = function() {
       clickCount++;
       if (clickCount < eggStages.length) {
         eggImage.src = eggStages[clickCount];
@@ -109,12 +30,11 @@
         prizeText.textContent = Выпало: ${prize};
         prizeText.style.display = 'block';
       }
-    }
+    };
 
-    function goBack() {
+    window.goBack = function() {
       document.getElementById('main-menu').style.display = 'flex';
       document.getElementById('egg-screen').style.display = 'none';
-    }
-  </script>
-</body>
-</html>
+    };
+  };
+</script>
