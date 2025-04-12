@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Ester Web App</title>
+  <title>Ester Egg</title>
   <style>
     body {
       font-family: sans-serif;
@@ -41,11 +41,11 @@
       display: none;
       flex-direction: column;
       align-items: center;
+      text-align: center;
     }
     .egg {
       margin-top: 30px;
-      width: 120px;
-      height: auto;
+      font-size: 60px;
       cursor: pointer;
       transition: transform 0.3s;
     }
@@ -66,59 +66,52 @@
 </head>
 <body>
   <h1>Ester</h1>
-
   <div class="menu" id="main-menu">
-    <button id="btn1">Telegram Premium</button>
-    <button id="btn2">Случайный подарок</button>
-    <button id="btn3">Звезды Telegram</button>
+    <button onclick="showEgg('Telegram Premium')">Telegram Premium</button>
+    <button onclick="showEgg('Случайный подарок')">Случайный подарок</button>
+    <button onclick="showEgg('Звезда Telegram')">Звезда Telegram</button>
   </div>
 
   <div id="egg-screen" class="menu">
-    <img id="egg-image" src="" alt="Egg" class="egg" />
+    <div class="egg" id="egg" onclick="nextStage()">🥚</div>
     <div class="prize" id="prize-text"></div>
-    <button class="back-btn" id="back-btn">Назад в меню</button>
+    <button class="back-btn" onclick="goBack()">Назад в меню</button>
   </div>
 
   <script>
-    const eggStages = ['egg1.png', 'egg2_cracked.png', 'egg3_star.png'];
     let prize = '';
-    let clickCount = 0;
-
-    const mainMenu = document.getElementById('main-menu');
-    const eggScreen = document.getElementById('egg-screen');
-    const eggImage = document.getElementById('egg-image');
-    const prizeText = document.getElementById('prize-text');
+    let stage = 0;
 
     function showEgg(selectedPrize) {
       prize = selectedPrize;
-      clickCount = 0;
-      eggImage.src = eggStages[0];
-      mainMenu.style.display = 'none';
-      eggScreen.style.display = 'flex';
-      prizeText.style.display = 'none';
+      stage = 0;
+      document.getElementById('main-menu').style.display = 'none';
+      document.getElementById('egg-screen').style.display = 'flex';
+      document.getElementById('egg').textContent = '🥚';
+      document.getElementById('prize-text').style.display = 'none';
     }
 
-    function revealPrize() {
-      clickCount++;
-      if (clickCount < eggStages.length) {
-        eggImage.src = eggStages[clickCount];
-      }
-      if (clickCount === eggStages.length - 1) {
+    function nextStage() {
+      stage++;
+      const egg = document.getElementById('egg');
+      const prizeText = document.getElementById('prize-text');
+
+      if (stage === 1) {
+        egg.textContent = '🥚 (треснуло)';
+      } else if (stage === 2) {
+        egg.textContent = '✨🐣✨';
+      } else if (stage === 3) {
+        egg.style.display = 'none';
         prizeText.textContent = Выпало: ${prize};
         prizeText.style.display = 'block';
       }
     }
 
     function goBack() {
-      mainMenu.style.display = 'flex';
-      eggScreen.style.display = 'none';
+      document.getElementById('main-menu').style.display = 'flex';
+      document.getElementById('egg-screen').style.display = 'none';
+      document.getElementById('egg').style.display = 'block';
     }
-
-    document.getElementById('btn1').onclick = () => showEgg('Telegram Premium');
-    document.getElementById('btn2').onclick = () => showEgg('Случайный подарок');
-    document.getElementById('btn3').onclick = () => showEgg('Звезды Telegram');
-    eggImage.onclick = revealPrize;
-    document.getElementById('back-btn').onclick = goBack;
   </script>
 </body>
 </html>
